@@ -52,7 +52,7 @@ clock = pygame.time.Clock()
 class GameObject:
     """Базовый класс для игровых объектов."""
 
-    def __init__(self, body_color):
+    def __init__(self, body_color=None):
         self.body_color = body_color
         self.position = (
             SCREEN_WIDTH // 2,
@@ -60,7 +60,7 @@ class GameObject:
         )
 
     def draw(self, screen):
-        """Метотд отрисовки объекта. Переопределяется в подклассах"""
+        """Метотд отрисовки объекта. Которое переопределяется в подклассах"""
         def draw(self, surface):
             pass
 
@@ -68,7 +68,7 @@ class GameObject:
 class Apple(GameObject):
     """Класс для представления яблока."""
 
-    def __init__(self, body_color = APPLE_COLOR):
+    def __init__(self, body_color=APPLE_COLOR):
         """Инициализация яблока"""
 
         self.body_color = body_color
@@ -140,7 +140,10 @@ class Snake(GameObject):
 
 def main():
     # Тут нужно создать экземпляры классов.
-    ...
+    game = None
+    snake = Snake()
+    apple = Apple()
+
 
     while True:
         clock.tick(SPEED)
@@ -170,15 +173,6 @@ def main():
 if __name__ == '__main__':
     main()
 
-
-# # Метод draw класса Apple
-# def draw(self, surface):
-#     rect = pygame.Rect(
-#         (self.position[0], self.position[1]),
-#         (GRID_SIZE, GRID_SIZE)
-#     )
-#     pygame.draw.rect(surface, self.body_color, rect)
-#     pygame.draw.rect(surface, BORDER_COLOR, rect, 1)
 
 # # Метод draw класса Snake
 # def draw(self, surface):
