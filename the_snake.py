@@ -90,18 +90,53 @@ class Apple(GameObject):
 
 
 class Snake(GameObject):
-    def __init__(self, body_color = SNAKE_COLOR, length = 1, position = GRID_SIZE, direction = RIGHT, next_direction = None):
-        pass
-    def update_direction(self):
-        pass
+    def __init__(self):
+            super().__init__()
+            self.length = 1
+            self.positions = GRID_SIZE  # Начальная позиция - центр экрана
+            self.direction = RIGHT  # Змейка изначально движется вправо
+            self.next_direction = None  # Следующее направление движения, по умолчанию None
+            self.body_color = SNAKE_COLOR  # Цвет змейки (зеленый по умолчанию)
+
+    def update_direction(self, new_direction):
+        # Обновление направления движения змейки
+        self.next_direction = new_direction
+
     def move(self):
-        pass
+        # Обновление позиции змейки
+        head_x, head_y = self.positions[0]
+        if self.direction == "up":
+            new_head = (head_x, head_y - 1)
+        elif self.direction == "down":
+            new_head = (head_x, head_y + 1)
+        elif self.direction == "left":
+            new_head = (head_x - 1, head_y)
+        elif self.direction == "right":
+            new_head = (head_x + 1, head_y)
+
     def draw(self, surface):
-        pass
+        for position in self.positions[:-1]:
+            rect = (
+                pygame.Rect((position[0], position[1]), (GRID_SIZE, GRID_SIZE))
+            )
+            pygame.draw.rect(surface, self.body_color, rect)
+            pygame.draw.rect(surface, BORDER_COLOR, rect, 1)
+
+        # Отрисовка головы змейки
+        head_rect = pygame.Rect(self.positions[0], (GRID_SIZE, GRID_SIZE))
+        pygame.draw.rect(surface, self.body_color, head_rect)
+        pygame.draw.rect(surface, BORDER_COLOR, head_rect, 1)
+
     def get_head_position(self):
-        pass
+        # Возвращает позицию головы змейки
+        return self.positions[0]
+
     def reset(self):
-        pass
+        # Сброс змейки в начальное состояние
+        self.length = 1
+        self.positions = [(0, 0)]
+        self.direction = "right"
+        self.next_direction = None
 
 def main():
     # Тут нужно создать экземпляры классов.
