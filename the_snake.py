@@ -193,9 +193,9 @@ def main():
     game = GameObject()
     apple = Apple()
     snake = Snake()
+    running = True
 
-
-    while True:
+    while running:
         clock.tick(SPEED)
 
         # Тут опишите основную логику игры.
@@ -209,7 +209,14 @@ def main():
 if __name__ == '__main__':
     main()
 
-
+# for event in pygame.event.get():
+#     if event.type == pygame.QUIT:
+#         pygame.quit()
+#     screen.fill(BOARD_BACKGROUND_COLOR)
+#     pygame.display.flip()
+#
+#
+#
 # # Метод draw класса Snake
 # def draw(self, surface):
 #     for position in self.positions[:-1]:
