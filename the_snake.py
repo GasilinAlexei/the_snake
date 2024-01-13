@@ -1,7 +1,7 @@
-from random import choice, randint
+import sys
+from random import randint
 
 import pygame
-from pygame import Vector2
 
 # Инициализация PyGame:
 pygame.init()
@@ -90,6 +90,7 @@ class Apple(GameObject):
 
 
 class Snake(GameObject):
+    
     def __init__(self):
             super().__init__()
             self.length = 1
@@ -102,17 +103,54 @@ class Snake(GameObject):
         # Обновление направления движения змейки
         self.next_direction = new_direction
 
-    def move(self):
+    def move(self, surface):
+        # Получение текущей головной позиции
+        head_position = self.get_head_position()
+        """Вычисления позиции новой головы"""
+        dx, dy = 0, 0
+
         # Обновление позиции змейки
+        self.direction = None
+        head_rect = pygame.Rect(self.positions[0], (GRID_SIZE, GRID_SIZE))
+        pygame.draw.rect(surface, self.body_color, head_rect)
+        pygame.draw.rect(surface, BORDER_COLOR, head_rect, 1)
         head_x, head_y = self.positions[0]
-        if self.direction == "up":
-            new_head = (head_x, head_y - 1)
-        elif self.direction == "down":
-            new_head = (head_x, head_y + 1)
-        elif self.direction == "left":
-            new_head = (head_x - 1, head_y)
-        elif self.direction == "right":
-            new_head = (head_x + 1, head_y)
+
+        # Отрисовка головы змейки
+        head_rect = pygame.Rect(self.positions[0], (GRID_SIZE, GRID_SIZE))
+        pygame.draw.rect(surface, self.body_color, head_rect)
+        pygame.draw.rect(surface, BORDER_COLOR, head_rect, 1)
+
+        # Затирание последнего сегмента
+        if self.last:
+            last_rect = pygame.Rect(
+                (self.last[0], self.last[1]),
+                (GRID_SIZE, GRID_SIZE)
+            )
+            pygame.draw.rect(surface, BOARD_BACKGROUND_COLOR, last_rect)
+
+
+    def handle_keys(cls, GameObject):
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                pygame.quit()
+                raise SystemExit
+            elif event.type == pygame.KEYDOWN:
+                if event.key == pygame.K_UP and GameObject.direction != DOWN:
+                    GameObject.next_direction = UP
+                elif event.key == pygame.K_DOWN and GameObject.direction != UP:
+                    GameObject.next_direction = DOWN
+                elif event.key == pygame.K_LEFT and GameObject.direction != RIGHT:
+                    GameObject.next_direction = LEFT
+                elif event.key == pygame.K_RIGHT and GameObject.direction != LEFT:
+                    GameObject.next_direction = RIGHT
+
+
+        def update_direction(self):
+            if self.next_direction:
+                self.direction = self.next_direction
+                self.next_direction = None
+
 
     def draw(self, surface):
         for position in self.positions[:-1]:
@@ -122,10 +160,6 @@ class Snake(GameObject):
             pygame.draw.rect(surface, self.body_color, rect)
             pygame.draw.rect(surface, BORDER_COLOR, rect, 1)
 
-        # Отрисовка головы змейки
-        head_rect = pygame.Rect(self.positions[0], (GRID_SIZE, GRID_SIZE))
-        pygame.draw.rect(surface, self.body_color, head_rect)
-        pygame.draw.rect(surface, BORDER_COLOR, head_rect, 1)
 
     def get_head_position(self):
         # Возвращает позицию головы змейки
@@ -134,40 +168,28 @@ class Snake(GameObject):
     def reset(self):
         # Сброс змейки в начальное состояние
         self.length = 1
-        self.positions = [(0, 0)]
-        self.direction = "right"
+        self.positions = GRID_SIZE
+        self.direction = RIGHT
         self.next_direction = None
 
 def main():
     # Тут нужно создать экземпляры классов.
-    game = None
+    game = GameObject()
     snake = Snake()
     apple = Apple()
+
 
 
     while True:
         clock.tick(SPEED)
 
         # Тут опишите основную логику игры.
-        def handle_keys(GameObject):
-            for event in pygame.event.get():
-                if event.type == pygame.QUIT:
-                    pygame.quit()
-                    raise SystemExit
-                elif event.type == pygame.KEYDOWN:
-                    if event.key == pygame.K_UP and GameObject.direction != DOWN:
-                        GameObject.next_direction = UP
-                    elif event.key == pygame.K_DOWN and GameObject.direction != UP:
-                        GameObject.next_direction = DOWN
-                    elif event.key == pygame.K_LEFT and GameObject.direction != RIGHT:
-                        GameObject.next_direction = LEFT
-                    elif event.key == pygame.K_RIGHT and GameObject.direction != LEFT:
-                        GameObject.next_direction = RIGHT
-
-        def update_direction(self):
-            if self.next_direction:
-                self.direction = self.next_direction
-                self.next_direction = None
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                pygame.quit()
+                sys.exit()
+            screen.fill(BOARD_BACKGROUND_COLOR)
+            pygame.display.flip()
 
 
 if __name__ == '__main__':
