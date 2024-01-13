@@ -1,4 +1,3 @@
-import sys
 from random import randint
 
 import pygame
@@ -107,14 +106,31 @@ class Snake(GameObject):
         # Получение текущей головной позиции
         head_position = self.get_head_position()
         """Вычисления позиции новой головы"""
-        dx, dy = 0, 0
-
+        dx, dy = self.direction
+        new_head_x = (head_position[0] + dx) % GRID_WIDTH
+        new_head_y = (head_position[1] + dy) % GRID_HEIGHT
+        new_head_position = (new_head_x, new_head_y)
         # Обновление позиции змейки
         self.direction = None
         head_rect = pygame.Rect(self.positions[0], (GRID_SIZE, GRID_SIZE))
         pygame.draw.rect(surface, self.body_color, head_rect)
         pygame.draw.rect(surface, BORDER_COLOR, head_rect, 1)
         head_x, head_y = self.positions[0]
+
+        if new_head_x < 0:
+            new_head_x = GRID_WIDTH // GRID_SIZE - 1
+        if new_head_x >= GRID_HEIGHT // GRID_SIZE:
+            new_head_x = 0
+        if new_head_y < 0:
+            new_head_y = GRID_WIDTH // GRID_SIZE - 1
+        if new_head_y >= GRID_HEIGHT // GRID_SIZE:
+            new_head_y = 0
+        new_head_position = (new_head_x, new_head_y)
+
+        # Проверка на столкновение с собой
+        if new_head_position in self.positions[2:]:
+            self.reset()
+            return
 
         # Отрисовка головы змейки
         head_rect = pygame.Rect(self.positions[0], (GRID_SIZE, GRID_SIZE))
@@ -175,9 +191,8 @@ class Snake(GameObject):
 def main():
     # Тут нужно создать экземпляры классов.
     game = GameObject()
-    snake = Snake()
     apple = Apple()
-
+    snake = Snake()
 
 
     while True:
@@ -187,7 +202,6 @@ def main():
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 pygame.quit()
-                sys.exit()
             screen.fill(BOARD_BACKGROUND_COLOR)
             pygame.display.flip()
 
