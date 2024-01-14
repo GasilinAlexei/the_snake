@@ -5,10 +5,6 @@ import pygame
 # Инициализация PyGame:
 pygame.init()
 
-# Цвет
-APPLE_COLLOR = (255, 0, 0)
-SNAKE_COLLOR = (0, 255, 0)
-
 # Константы для размеров поля и сетки:
 SCREEN_WIDTH, SCREEN_HEIGHT = 640, 480
 GRID_SIZE = 20
