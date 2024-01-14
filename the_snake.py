@@ -68,17 +68,19 @@ class Apple(GameObject):
 
     def __init__(self, body_color=APPLE_COLOR):
         """Инициализация яблока"""
-
+        super().__init__()
         self.body_color = body_color
         self.randomize_position()
 
     def randomize_position(self):
+        """Генерация случайной позиции для яблока в рамках игрового поля."""
         self.position = (
             randint(0, GRID_WIDTH - 1) * GRID_SIZE,
             randint(0, GRID_HEIGHT - 1) * GRID_SIZE
         )
 
     def draw(self, surface):
+        """Отрисовка."""
         rect = pygame.Rect(
             (self.position[0], self.position[1]),
             (GRID_SIZE, GRID_SIZE)
@@ -88,23 +90,25 @@ class Apple(GameObject):
 
 
 class Snake(GameObject):
+    """Класс для представления змейки."""
     def __init__(self):
         super().__init__()
         self.length = 1
-        self.positions = [(SCREEN_WIDTH // 2, SCREEN_HEIGHT // 2)]  # Начальная позиция - центр экрана
+        self.positions = [(SCREEN_WIDTH // 2, 
+                           SCREEN_HEIGHT // 2)]  # Позиция в центре экрана
         self.direction = RIGHT  # Змейка изначально движется вправо
-        self.next_direction = None  # Следующее направление движения, по умолчанию None
+        self.next_direction = None  # Следующее движения, по умолчанию None
         self.body_color = SNAKE_COLOR  # Цвет змейки (зеленый по умолчанию)
         self.last = None
 
     def update_direction(self):
+        """Обновление направление движения."""
         if self.next_direction:
             self.direction = self.next_direction
             self.next_direction = None
 
     def move(self):
         """Получение текущей головной позиции"""
-
         head_position = self.get_head_position()
 
         """Вычисления позиции новой головы"""
@@ -114,7 +118,7 @@ class Snake(GameObject):
         new_head_position = (new_head_x, new_head_y)
 
         """Проверка на столкновение с собой"""
-        if new_head_position in self.positions[2:]:
+        if new_head_position in self.positions[1:]:
             self.reset()
             return
 
@@ -122,8 +126,6 @@ class Snake(GameObject):
         self.positions.insert(0, new_head_position)
         if len(self.positions) > self.length:
             self.positions.pop()
-
-
 
     def draw(self, surface):
         for position in self.positions[:-1]:
@@ -146,19 +148,21 @@ class Snake(GameObject):
             )
             pygame.draw.rect(surface, BOARD_BACKGROUND_COLOR, last_rect)
 
-
-    def get_head_position(self):
-        # Возвращает позицию головы змейки
-        return self.positions[0]
-
     def reset(self):
-        # Сброс змейки в начальное состояние
+        """Сброс змейки в начальное состояние"""
         self.length = 1  # Начальная длина змейка
         self.positions = [(SCREEN_WIDTH // 2, SCREEN_HEIGHT // 2)]  # Начальная позиция - центр экрана
         self.direction = RIGHT  # Движение змейки по умолчанию
         self.next_direction = None  # Следующее направление движения, по умолчанию None
+        self.last = None
+
+    def get_head_position(self):
+        """Возвращает позицию головы змейки"""
+        return self.positions[0]
+
 
 def handle_keys(game_object):
+    """Управление стрелками"""
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
             pygame.quit()
@@ -173,14 +177,17 @@ def handle_keys(game_object):
             elif event.key == pygame.K_RIGHT and game_object.direction != LEFT:
                 game_object.next_direction = RIGHT
 
+
 def main():
-    # Тут нужно создать экземпляры классов.
+    """Экземпляры классов."""
     apple = Apple()
     snake = Snake()
     running = True
 
     while running:
         clock.tick(SPEED)
+        handle_keys(snake)
+
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 running = False
@@ -203,10 +210,12 @@ def main():
             snake.reset()
 
         # Отрисовка змейки и яблока
+        screen.fill(BOARD_BACKGROUND_COLOR)
         snake.draw(screen)
         apple.draw(screen)
 
         # Обновление экрана
+
         pygame.display.update()
 
     pygame.quit()
