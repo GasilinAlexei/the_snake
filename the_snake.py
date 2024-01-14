@@ -42,8 +42,6 @@ pygame.display.set_caption('Змейка')
 clock = pygame.time.Clock()
 
 
-# Тут опишите все классы игры.
-
 class GameObject:
     """Базовый класс для игровых объектов."""
 
@@ -97,7 +95,6 @@ class Snake(GameObject):
         self.next_direction = None  # Следующее движения, по умолчанию None
         self.body_color = SNAKE_COLOR  # Цвет змейки (зеленый по умолчанию)
         self.last = None
-    #   self.game_over = False
 
     def update_direction(self):
         """Обновление направление движения."""
@@ -179,17 +176,13 @@ def handle_keys(game_object):
 
 def main():
     """Экземпляры классов."""
-    apple = Apple()
     snake = Snake()
+    apple = Apple()
     running = True
 
     while running:
         clock.tick(SPEED)
         handle_keys(snake)
-
-        for event in pygame.event.get():
-            if event.type == pygame.QUIT:
-                running = False
 
         # Обновление направления движения змейки
         snake.update_direction()
