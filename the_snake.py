@@ -9,30 +9,30 @@ pg.init()
 
 # Константы для размеров поля и сетки:
 SCREEN_WIDTH, SCREEN_HEIGHT = 640, 480
-GRID_SIZE: int = 20
-GRID_WIDTH: int = SCREEN_WIDTH // GRID_SIZE
-GRID_HEIGHT: int = SCREEN_HEIGHT // GRID_SIZE
+GRID_SIZE = 20
+GRID_WIDTH = SCREEN_WIDTH // GRID_SIZE
+GRID_HEIGHT = SCREEN_HEIGHT // GRID_SIZE
 
 # Направления движения:
-UP: Tuple[int, int] = (0, -1)
-DOWN: Tuple[int, int] = (0, 1)
-LEFT: Tuple[int, int] = (-1, 0)
-RIGHT: Tuple[int, int] = (1, 0)
+UP = (0, -1)
+DOWN = (0, 1)
+LEFT = (-1, 0)
+RIGHT = (1, 0)
 
 # Цвет фона - черный:
-BOARD_BACKGROUND_COLOR: Tuple[int, int, int] = (0, 0, 0)
+BOARD_BACKGROUND_COLOR = (0, 0, 0)
 
 # Цвет границы ячейки
-BORDER_COLOR: Tuple[int, int, int] = (93, 216, 228)
+BORDER_COLOR = (93, 216, 228)
 
 # Цвет яблока
-APPLE_COLOR: Tuple[int, int, int] = (255, 0, 0)
+APPLE_COLOR = (255, 0, 0)
 
 # Цвет змейки
-SNAKE_COLOR: Tuple[int, int, int] = (0, 255, 0)
+SNAKE_COLOR = (0, 255, 0)
 
 # Скорость движения змейки:
-SPEED: int = 20
+SPEED = 20
 
 # Настройка игрового окна:
 screen = pg.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT), 0, 32)
@@ -47,8 +47,8 @@ clock = pg.time.Clock()
 class GameObject:
     """Базовый класс для игровых объектов."""
 
-    def __init__(self, body_color: Tuple[int, int, int] = None):
-        self.body_color: Tuple[int, int, int] = body_color
+    def __init__(self, body_color: Optional[Tuple[int, int, int]] = None):
+        self.body_color: Optional[Tuple[int, int, int]] = body_color
         self.position: Tuple[int, int] = (
             SCREEN_WIDTH // 2,
             SCREEN_HEIGHT // 2
@@ -152,12 +152,12 @@ class Snake(GameObject):
 
     def reset(self):
         """Сброс змейки в начальное состояние"""
-        self.length = 1
-        self.positions = [(SCREEN_WIDTH // 2,
-                           SCREEN_HEIGHT // 2)]
-        self.direction = RIGHT
-        self.next_direction = None
-        self.last = None
+        self.length: int = 1
+        self.positions: List[Tuple[int, int]] = [(SCREEN_WIDTH // 2,
+                                                  SCREEN_HEIGHT // 2)]
+        self.direction: Tuple[int, int] = RIGHT
+        self.next_direction: Optional[Tuple[int, int]] = None
+        self.last: Optional[Tuple[int, int]] = None
 
     def get_head_position(self):
         """Возвращает позицию головы змейки"""
@@ -165,6 +165,7 @@ class Snake(GameObject):
 
 
 def handle_keys(game_object):
+
     """Управление стрелками"""
     for event in pg.event.get():
         if event.type == pg.QUIT:
