@@ -71,7 +71,9 @@ class Apple(GameObject):
 
     def randomize_position(self):
         """Генерация случайной позиции для яблока в рамках игрового поля."""
-        snake_positions: List[Tuple[int, int]] = [(x, y) for x, y in self.snake.positions]
+        snake_positions: List[Tuple[int, int]] = [
+            (x, y) for x, y in self.snake.positions
+        ]
         while True:
             self.position = (
                 randint(0, GRID_WIDTH - 1) * GRID_SIZE,
