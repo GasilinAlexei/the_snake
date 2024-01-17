@@ -165,7 +165,6 @@ class Snake(GameObject):
 
 
 def handle_keys(game_object):
-
     """Управление стрелками"""
     for event in pg.event.get():
         if event.type == pg.QUIT:
