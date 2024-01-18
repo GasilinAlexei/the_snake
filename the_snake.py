@@ -62,25 +62,18 @@ class GameObject:
 class Apple(GameObject):
     """Класс для представления яблока."""
 
-    def __init__(self, snake, body_color: Tuple[int, int, int] = APPLE_COLOR):
+    def __init__(self, body_color: Tuple[int, int, int] = APPLE_COLOR):
         """Инициализация яблока."""
         super().__init__()
-        self.snake = snake
         self.body_color: Tuple[int, int, int] = body_color
         self.randomize_position()
 
     def randomize_position(self):
         """Генерация случайной позиции для яблока в рамках игрового поля."""
-        snake_positions: List[Tuple[int, int]] = [
-            (x, y) for x, y in self.snake.positions
-        ]
-        while True:
-            self.position = (
-                randint(0, GRID_WIDTH - 1) * GRID_SIZE,
-                randint(0, GRID_HEIGHT - 1) * GRID_SIZE
-            )
-            if self.position not in snake_positions:
-                break
+        self.position = (
+            randint(0, GRID_WIDTH - 1) * GRID_SIZE,
+            randint(0, GRID_HEIGHT - 1) * GRID_SIZE
+        )
 
     def draw(self, surface: pg.Surface) -> None:
         """Метод draw класса Apple."""
@@ -186,7 +179,7 @@ def handle_keys(game_object):
 def main():
     """Экземпляры классов."""
     snake = Snake()
-    apple = Apple(snake)
+    apple = Apple()
     running = True
 
     while running:
