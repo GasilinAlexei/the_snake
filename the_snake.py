@@ -220,5 +220,5 @@ def main():
 
 if __name__ == '__main__':
     # snake = Snake()
-    # apple = Apple()  pytest ругается
+    # apple = Apple()  pytest ругается, хотя сама программа работает
     main()
