@@ -74,6 +74,11 @@ class Apple(GameObject):
             randint(0, GRID_WIDTH - 1) * GRID_SIZE,
             randint(0, GRID_HEIGHT - 1) * GRID_SIZE
         )
+        # while self.position in snake.positions:
+        #     self.position = (
+        #         randint(0, GRID_WIDTH - 1) * GRID_SIZE,
+        #         randint(0, GRID_HEIGHT - 1) * GRID_SIZE
+        #     )
 
     def draw(self, surface: pg.Surface) -> None:
         """Метод draw класса Apple."""
@@ -178,9 +183,9 @@ def handle_keys(game_object):
 
 def main():
     """Экземпляры классов."""
+    running = True
     snake = Snake()
     apple = Apple()
-    running = True
 
     while running:
         clock.tick(SPEED)
@@ -214,4 +219,6 @@ def main():
 
 
 if __name__ == '__main__':
+    # snake = Snake()
+    # apple = Apple()  pytest ругается
     main()
